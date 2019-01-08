@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ryo88c\Authority;
 
+use BEAR\Resource\Resource;
 use BEAR\Resource\ResourceInterface;
 use FakeVendor\FakeProject\Module\AppModule;
 use Koriym\HttpConstants\StatusCode;
@@ -37,6 +38,7 @@ class AuthorityTest extends TestCase
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredAllow')->request();
 
         $this->assertSame(StatusCode::OK, $response->code);
@@ -48,6 +50,7 @@ class AuthorityTest extends TestCase
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredAllow')->request();
 
         $this->assertSame(StatusCode::FORBIDDEN, $response->code);
@@ -60,6 +63,7 @@ class AuthorityTest extends TestCase
     public function testFailAuthorizeByAllowWithoutToken() : void
     {
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredAllow')->request();
 
         $this->assertSame(StatusCode::UNAUTHORIZED, $response->code);
@@ -72,6 +76,7 @@ class AuthorityTest extends TestCase
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredDeny')->request();
 
         $this->assertSame(StatusCode::OK, $response->code);
@@ -83,6 +88,7 @@ class AuthorityTest extends TestCase
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredDeny')->request();
 
         $this->assertSame(StatusCode::FORBIDDEN, $response->code);
@@ -95,6 +101,7 @@ class AuthorityTest extends TestCase
     public function testFailAuthorizeByDenyWithoutToken() : void
     {
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredAllow')->request();
 
         $this->assertSame(StatusCode::UNAUTHORIZED, $response->code);
@@ -108,6 +115,7 @@ class AuthorityTest extends TestCase
         $_GET['accessToken'] = $token;
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredAllow')->request();
 
         $this->assertSame(StatusCode::BAD_REQUEST, $response->code);
