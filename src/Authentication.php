@@ -20,6 +20,9 @@ class Authentication implements AuthenticationInterface
         $this->config = $config;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function authenticate(Audience $audience, Auth $annotation) : bool
     {
         $condition = $this->extractAuthCondition($annotation);
