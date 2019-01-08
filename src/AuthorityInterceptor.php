@@ -30,8 +30,6 @@ final class AuthorityInterceptor implements MethodInterceptor
     private $config;
 
     /**
-     * AuthorityInterceptor constructor.
-     *
      * @Named("config=authority_config")
      */
     public function __construct(

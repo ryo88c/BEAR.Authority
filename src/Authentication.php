@@ -11,8 +11,6 @@ final class Authentication implements AuthenticationInterface
     private $config;
 
     /**
-     * Authentication constructor.
-     *
      * @Named("config=authentication_config")
      */
     public function __construct(array $config)

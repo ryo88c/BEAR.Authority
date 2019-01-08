@@ -17,8 +17,6 @@ final class Payload implements PayloadInterface
     private $exp;
 
     /**
-     * Payload constructor.
-     *
      * @see https://tools.ietf.org/html/rfc7519#section-4.1
      */
     public function __construct(AbstractAudience $aud, int $exp)

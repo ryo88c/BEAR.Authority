@@ -15,8 +15,6 @@ final class Authorization implements AuthorizationInterface
     private $config;
 
     /**
-     * Authorization constructor.
-     *
      * @param Request $request Request
      * @param array   $config  Configuration
      *
