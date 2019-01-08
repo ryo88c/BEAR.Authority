@@ -27,7 +27,10 @@ class Audience extends AbstractAudience
         }
     }
 
-    public function __get($name)
+    /**
+     * {@inheritdoc}
+     */
+    public function __get(string $name) : string
     {
         if (! isset($this->{$name})) {
             throw new \InvalidArgumentException(sprintf('%s in undefined.', $name));
@@ -36,6 +39,9 @@ class Audience extends AbstractAudience
         return $this->{$name};
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function toArray() : array
     {
         return ['id' => $this->id, 'role' => $this->role];

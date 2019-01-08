@@ -16,7 +16,7 @@ abstract class AbstractAudience
      */
     public $role;
 
-    abstract public function __get($name);
+    abstract public function __get(string $name) : string;
 
-    abstract public function toArray();
+    abstract public function toArray() : array;
 }
