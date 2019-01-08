@@ -27,7 +27,7 @@ final class Authentication implements AuthenticationInterface
     public function authenticate(AbstractAudience $audience, Auth $annotation) : bool
     {
         $condition = $this->extractAuthCondition($annotation);
-        if (empty($condition)) {
+        if ($condition === []) {
             return true;
         }
         $evaluated = in_array($audience->role, $condition['roles'], true);
@@ -47,6 +47,8 @@ final class Authentication implements AuthenticationInterface
         if (! empty($annotation->deny)) {
             return ['roles' => $this->extractAuthAnnotation($annotation, 'deny'), 'comparison' => 'deny'];
         }
+
+        return [];
     }
 
     private function extractAuthAnnotation(Auth $annotation, $permission) : array
