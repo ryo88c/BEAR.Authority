@@ -56,13 +56,13 @@ class Authorization implements AuthorizationInterface
         return new Payload(new Audience((array) $payload['aud']), $payload['exp']);
     }
 
-    private function getPrivateKey()
+    private function getPrivateKey() : string
     {
         if (! file_exists($this->config['privateKey']['filePath'])) {
             file_put_contents($this->config['privateKey']['filePath'], $this->generatePrivateKey());
         }
 
-        return file_get_contents($this->config['privateKey']['filePath']);
+        return $this->fileGetContests($this->config['privateKey']['filePath']);
     }
 
     private function generatePrivateKey() : string
@@ -113,5 +113,15 @@ class Authorization implements AuthorizationInterface
         }
 
         return $token;
+    }
+
+    private function fileGetContests(string $file) : string
+    {
+        $fileContents = \file_get_contents($file);
+        if (\is_string($fileContents)) {
+            return $file;
+        }
+
+        throw new \RuntimeException($file);
     }
 }
