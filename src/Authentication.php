@@ -31,7 +31,7 @@ class Authentication implements AuthenticationInterface
         return $condition['comparison'] === 'allow' ? $evaluated : ! $evaluated;
     }
 
-    private function extractAuthCondition(Auth $annotation)
+    private function extractAuthCondition(Auth $annotation) : array
     {
         if (! empty($annotation->allow)) {
             if (! empty($annotation->deny)) {
