@@ -10,7 +10,13 @@ namespace Ryo88c\Authority;
  */
 class Auth
 {
+    /**
+     * @var string
+     */
     public $allow;
 
+    /**
+     * @var string
+     */
     public $deny;
 }
