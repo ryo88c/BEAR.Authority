@@ -27,7 +27,10 @@ class Payload implements PayloadInterface
         $this->exp = $exp;
     }
 
-    public function __get($name)
+    /**
+     * {@inheritdoc}
+     */
+    public function __get(string $name) : AbstractAudience
     {
         if (! isset($this->{$name})) {
             throw new \InvalidArgumentException(sprintf('%s in undefined.', $name));
@@ -36,6 +39,9 @@ class Payload implements PayloadInterface
         return $this->{$name};
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function toArray() : array
     {
         return ['aud' => $this->aud->toArray(), 'exp' => $this->exp];

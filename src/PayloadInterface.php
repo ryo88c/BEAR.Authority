@@ -12,7 +12,7 @@ namespace Ryo88c\Authority;
  */
 interface PayloadInterface
 {
-    public function __get($name);
+    public function __get(string $name) : AbstractAudience;
 
-    public function toArray();
+    public function toArray() : array;
 }
