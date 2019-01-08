@@ -79,7 +79,7 @@ class Authorization implements AuthorizationInterface
     private function extractToken()
     {
         $token = null;
-        $header = $this->request->headers->get('authorization');
+        $header = (string) $this->request->headers->get('authorization');
         if (preg_match('!Bearer\s+(.*)\z!i', $header, $matches)) {
             $token = $matches[1];
         }
