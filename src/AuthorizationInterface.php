@@ -8,5 +8,5 @@ interface AuthorizationInterface
 {
     public function authorize() : AbstractAudience;
 
-    public function tokenize(AbstractAudience $aud, int $exp = null);
+    public function tokenize(AbstractAudience $aud, int $exp = null) : string;
 }
