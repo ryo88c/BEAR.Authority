@@ -1,6 +1,6 @@
 {
     "name": "Ryo88c/Authority",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "description": "An authority for BEAR.Sunday",
     "authors": [
