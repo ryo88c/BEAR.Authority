@@ -4,18 +4,8 @@ declare(strict_types=1);
 
 namespace Ryo88c\Authority;
 
-final class Payload implements PayloadInterface
+final class Payload extends AbstractPayload
 {
-    /**
-     * @var AbstractAudience
-     */
-    private $aud;
-
-    /**
-     * @var int
-     */
-    private $exp;
-
     /**
      * @see https://tools.ietf.org/html/rfc7519#section-4.1
      */
