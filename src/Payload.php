@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Ryo88c\Authority;
 
 class Payload implements PayloadInterface
@@ -15,9 +18,6 @@ class Payload implements PayloadInterface
 
     /**
      * Payload constructor.
-     *
-     * @param AudienceInterface $aud
-     * @param int               $exp
      *
      * @see https://tools.ietf.org/html/rfc7519#section-4.1
      */

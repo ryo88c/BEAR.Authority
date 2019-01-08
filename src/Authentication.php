@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Ryo88c\Authority;
 
 use Ray\Di\Di\Named;
@@ -9,8 +12,6 @@ class Authentication implements AuthenticationInterface
 
     /**
      * Authentication constructor.
-     *
-     * @param array $config
      *
      * @Named("config=authentication_config")
      */
@@ -38,7 +39,8 @@ class Authentication implements AuthenticationInterface
             }
 
             return ['roles' => $this->extractAuthAnnotation($annotation, 'allow'), 'comparison' => 'allow'];
-        } elseif (! empty($annotation->deny)) {
+        }
+        if (! empty($annotation->deny)) {
             return ['roles' => $this->extractAuthAnnotation($annotation, 'deny'), 'comparison' => 'deny'];
         }
     }
