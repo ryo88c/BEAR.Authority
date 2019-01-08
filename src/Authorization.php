@@ -8,7 +8,7 @@ use Aura\Web\Request;
 use Firebase\JWT\JWT;
 use Ray\Di\Di\Named;
 
-class Authorization implements AuthorizationInterface
+final class Authorization implements AuthorizationInterface
 {
     private $request;
 

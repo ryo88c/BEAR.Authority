@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ryo88c\Authority;
 
-class Audience extends AbstractAudience
+final class Audience extends AbstractAudience
 {
     /**
      * @var int

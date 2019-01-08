@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ryo88c\Authority;
 
-class Payload implements PayloadInterface
+final class Payload implements PayloadInterface
 {
     /**
      * @var AbstractAudience

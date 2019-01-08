@@ -6,7 +6,7 @@ namespace Ryo88c\Authority;
 
 use Ray\Di\Di\Named;
 
-class Authentication implements AuthenticationInterface
+final class Authentication implements AuthenticationInterface
 {
     private $config;
 

@@ -12,7 +12,7 @@ use Ray\Aop\MethodInterceptor;
 use Ray\Aop\MethodInvocation;
 use Ray\Di\Di\Named;
 
-class AuthorityInterceptor implements MethodInterceptor
+final class AuthorityInterceptor implements MethodInterceptor
 {
     /**
      * @var AuthorizationInterface
