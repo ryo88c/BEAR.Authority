@@ -7,7 +7,7 @@ namespace Ryo88c\Authority;
 class Payload implements PayloadInterface
 {
     /**
-     * @var AudienceInterface
+     * @var AbstractAudience
      */
     private $aud;
 
@@ -21,7 +21,7 @@ class Payload implements PayloadInterface
      *
      * @see https://tools.ietf.org/html/rfc7519#section-4.1
      */
-    public function __construct(AudienceInterface $aud, int $exp)
+    public function __construct(AbstractAudience $aud, int $exp)
     {
         $this->aud = $aud;
         $this->exp = $exp;

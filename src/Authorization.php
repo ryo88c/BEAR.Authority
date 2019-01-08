@@ -28,14 +28,14 @@ class Authorization implements AuthorizationInterface
         $this->config = $config;
     }
 
-    public function authorize() : AudienceInterface
+    public function authorize() : AbstractAudience
     {
         $payload = $this->decodeToken($this->extractToken());
 
         return $payload->aud;
     }
 
-    public function tokenize(AudienceInterface $aud, int $exp = null) : string
+    public function tokenize(AbstractAudience $aud, int $exp = null) : string
     {
         if (empty($exp)) {
             $exp = time() + 1800;

@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace Ryo88c\Authority;
 
-class Audience implements AudienceInterface
+class Audience extends AbstractAudience
 {
-    private $id;
+    /**
+     * @var int
+     */
+    public $id;
 
-    private $role;
+    /**
+     * @var string
+     */
+    public $role;
 
-    public function __construct($params)
+    public function __construct(array $params)
     {
         foreach (['id', 'role'] as $name) {
             if (! array_key_exists($name, $params)) {
