@@ -16,7 +16,7 @@ final class Authorization implements AuthorizationInterface
     private $request;
 
     /**
-     * @var array 
+     * @var array
      */
     private $config;
 
