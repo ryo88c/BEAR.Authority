@@ -7,6 +7,9 @@ use Ray\Di\Scope;
 
 class Module extends AbstractModule
 {
+    /**
+     * {@inheritDoc}
+     */
     public function configure()
     {
         $this->install(new AuraWebModule);
