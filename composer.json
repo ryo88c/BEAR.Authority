@@ -49,6 +49,7 @@
             "@cs",
             "phpmd src,tests text ./phpmd.xml",
             "phpstan analyse -l max src tests -c phpstan.neon --no-progress",
+            "psalm  --show-info=false",
             "@test"
         ],
         "coverage": [
