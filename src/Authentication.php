@@ -8,6 +8,9 @@ use Ray\Di\Di\Named;
 
 final class Authentication implements AuthenticationInterface
 {
+    /**
+     * @var array
+     */
     private $config;
 
     /**

@@ -10,8 +10,14 @@ use Ray\Di\Di\Named;
 
 final class Authorization implements AuthorizationInterface
 {
+    /**
+     * @var Request
+     */
     private $request;
 
+    /**
+     * @var array 
+     */
     private $config;
 
     /**
