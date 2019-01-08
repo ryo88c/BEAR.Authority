@@ -6,5 +6,5 @@ namespace Ryo88c\Authority;
 
 interface AuthenticationInterface
 {
-    public function authenticate(Audience $audience, Auth $annotation) : bool;
+    public function authenticate(AbstractAudience $audience, Auth $annotation) : bool;
 }

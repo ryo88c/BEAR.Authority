@@ -28,6 +28,9 @@ class Authorization implements AuthorizationInterface
         $this->config = $config;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function authorize() : AbstractAudience
     {
         $payload = $this->decodeToken($this->extractToken());
@@ -35,6 +38,9 @@ class Authorization implements AuthorizationInterface
         return $payload->aud;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function tokenize(AbstractAudience $aud, int $exp = null) : string
     {
         if (empty($exp)) {

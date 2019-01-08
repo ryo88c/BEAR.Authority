@@ -6,7 +6,7 @@ namespace Ryo88c\Authority;
 
 interface AuthorizationInterface
 {
-    public function authorize();
+    public function authorize() : AbstractAudience;
 
     public function tokenize(AbstractAudience $aud, int $exp = null);
 }
