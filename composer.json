@@ -1,5 +1,5 @@
 {
-    "name": "Ryo88c/Authority",
+    "name": "ryo88c/bear.authority",
     "type": "library",
     "license": "MIT",
     "description": "An authority for BEAR.Sunday",
@@ -58,8 +58,5 @@
             "php-cs-fixer fix -v",
             "phpcbf src tests"
         ]
-    },
-    "config": {
-        "process-timeout": 0
     }
 }
