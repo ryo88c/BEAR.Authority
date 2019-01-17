@@ -1,17 +1,19 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Ryo88c\Authority;
 
 use Ray\Di\Di\Named;
 
-class Authentication implements AuthenticationInterface
+final class Authentication implements AuthenticationInterface
 {
+    /**
+     * @var array
+     */
     private $config;
 
     /**
-     * Authentication constructor.
-     *
-     * @param array $config
-     *
      * @Named("config=authentication_config")
      */
     public function __construct(array $config)
@@ -19,10 +21,13 @@ class Authentication implements AuthenticationInterface
         $this->config = $config;
     }
 
-    public function authenticate(Audience $audience, Auth $annotation) : bool
+    /**
+     * {@inheritdoc}
+     */
+    public function authenticate(AbstractAudience $audience, Auth $annotation) : bool
     {
         $condition = $this->extractAuthCondition($annotation);
-        if (empty($condition)) {
+        if ($condition === []) {
             return true;
         }
         $evaluated = in_array($audience->role, $condition['roles'], true);
@@ -30,7 +35,7 @@ class Authentication implements AuthenticationInterface
         return $condition['comparison'] === 'allow' ? $evaluated : ! $evaluated;
     }
 
-    private function extractAuthCondition(Auth $annotation)
+    private function extractAuthCondition(Auth $annotation) : array
     {
         if (! empty($annotation->allow)) {
             if (! empty($annotation->deny)) {
@@ -38,9 +43,12 @@ class Authentication implements AuthenticationInterface
             }
 
             return ['roles' => $this->extractAuthAnnotation($annotation, 'allow'), 'comparison' => 'allow'];
-        } elseif (! empty($annotation->deny)) {
+        }
+        if (! empty($annotation->deny)) {
             return ['roles' => $this->extractAuthAnnotation($annotation, 'deny'), 'comparison' => 'deny'];
         }
+
+        return [];
     }
 
     private function extractAuthAnnotation(Auth $annotation, $permission) : array

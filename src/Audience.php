@@ -1,13 +1,22 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Ryo88c\Authority;
 
-class Audience implements AudienceInterface
+final class Audience extends AbstractAudience
 {
-    private $id;
+    /**
+     * @var int
+     */
+    public $id;
 
-    private $role;
+    /**
+     * @var string
+     */
+    public $role;
 
-    public function __construct($params)
+    public function __construct(array $params)
     {
         foreach (['id', 'role'] as $name) {
             if (! array_key_exists($name, $params)) {
@@ -18,7 +27,10 @@ class Audience implements AudienceInterface
         }
     }
 
-    public function __get($name)
+    /**
+     * {@inheritdoc}
+     */
+    public function __get(string $name) : string
     {
         if (! isset($this->{$name})) {
             throw new \InvalidArgumentException(sprintf('%s in undefined.', $name));
@@ -27,6 +39,9 @@ class Audience implements AudienceInterface
         return $this->{$name};
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function toArray() : array
     {
         return ['id' => $this->id, 'role' => $this->role];

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Ryo88c\Authority;
 
 use Ray\AuraWebModule\AuraWebModule;
@@ -7,7 +10,10 @@ use Ray\Di\Scope;
 
 class Module extends AbstractModule
 {
-    public function configure()
+    /**
+     * {@inheritdoc}
+     */
+    public function configure() : void
     {
         $this->install(new AuraWebModule);
         $this->bind()->annotatedWith('authority_config')->toInstance([

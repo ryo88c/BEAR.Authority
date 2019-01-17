@@ -1,6 +1,6 @@
 {
     "name": "ryo88c/bear.authority",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "description": "An authority for BEAR.Sunday",
     "authors": [
@@ -21,14 +21,9 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.13",
         "phpmd/phpmd": "^2.6",
-        "phpunit/phpunit": "^6.5|^7.0",
+        "phpunit/phpunit": "^7.0",
         "squizlabs/php_codesniffer": "^3.3",
-        "sebastian/phpcpd": "^3.0|^4.1",
-        "mayflower/php-codebrowser": "^1.1|^2.0",
-        "phploc/phploc": "^4.0",
-        "phpstan/phpstan-shim": "^0.9|^0.10",
-        "vimeo/psalm": "^2.0",
-        "roave/security-advisories": "dev-master"
+        "phpstan/phpstan-shim": "^0.10"
     },
     "autoload": {
         "psr-4": {
@@ -49,6 +44,7 @@
             "@cs",
             "phpmd src,tests text ./phpmd.xml",
             "phpstan analyse -l max src tests -c phpstan.neon --no-progress",
+            "psalm  --show-info=false",
             "@test"
         ],
         "coverage": [
@@ -62,8 +58,5 @@
             "php-cs-fixer fix -v",
             "phpcbf src tests"
         ]
-    },
-    "config": {
-        "process-timeout": 0
     }
 }

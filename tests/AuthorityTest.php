@@ -1,6 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Ryo88c\Authority;
 
+use BEAR\Resource\Resource;
 use BEAR\Resource\ResourceInterface;
 use FakeVendor\FakeProject\Module\AppModule;
 use Koriym\HttpConstants\StatusCode;
@@ -19,7 +23,7 @@ class AuthorityTest extends TestCase
      */
     private $tmpDir;
 
-    protected function setUp()
+    protected function setUp() : void
     {
         unset($_SERVER['HTTP_AUTHORIZATION'], $_SERVER['REQUEST_METHOD'], $_GET['accessToken'], $_POST['accessToken']);
 
@@ -28,23 +32,25 @@ class AuthorityTest extends TestCase
         $this->authorization = $injector->getInstance(AuthorizationInterface::class);
     }
 
-    public function testSuccessAuthorizeByAllow()
+    public function testSuccessAuthorizeByAllow() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredAllow')->request();
 
         $this->assertSame(StatusCode::OK, $response->code);
     }
 
-    public function testFailAuthorizeByAllow()
+    public function testFailAuthorizeByAllow() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'guest']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredAllow')->request();
 
         $this->assertSame(StatusCode::FORBIDDEN, $response->code);
@@ -54,32 +60,35 @@ class AuthorityTest extends TestCase
         );
     }
 
-    public function testFailAuthorizeByAllowWithoutToken()
+    public function testFailAuthorizeByAllowWithoutToken() : void
     {
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredAllow')->request();
 
         $this->assertSame(StatusCode::UNAUTHORIZED, $response->code);
         $this->assertSame('Bearer realm="Auth required."', $response->headers['WWW-Authenticate']);
     }
 
-    public function testSuccessAuthorizeByDeny()
+    public function testSuccessAuthorizeByDeny() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredDeny')->request();
 
         $this->assertSame(StatusCode::OK, $response->code);
     }
 
-    public function testFailAuthorizeByDeny()
+    public function testFailAuthorizeByDeny() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'guest']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredDeny')->request();
 
         $this->assertSame(StatusCode::FORBIDDEN, $response->code);
@@ -89,28 +98,30 @@ class AuthorityTest extends TestCase
         );
     }
 
-    public function testFailAuthorizeByDenyWithoutToken()
+    public function testFailAuthorizeByDenyWithoutToken() : void
     {
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredAllow')->request();
 
         $this->assertSame(StatusCode::UNAUTHORIZED, $response->code);
         $this->assertSame('Bearer realm="Auth required."', $response->headers['WWW-Authenticate']);
     }
 
-    public function testFailAuthorizeByMultipleToken1()
+    public function testFailAuthorizeByMultipleToken1() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
         $_GET['accessToken'] = $token;
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
+        /* @var Resource $resource */
         $response = $resource->uri('app://self/authRequiredAllow')->request();
 
         $this->assertSame(StatusCode::BAD_REQUEST, $response->code);
     }
 
-    public function testFailAuthorizeByMultipleToken2()
+    public function testFailAuthorizeByMultipleToken2() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
@@ -123,7 +134,7 @@ class AuthorityTest extends TestCase
         $this->assertSame(StatusCode::BAD_REQUEST, $response->code);
     }
 
-    public function testFailAuthorizeByMultipleToken3()
+    public function testFailAuthorizeByMultipleToken3() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);

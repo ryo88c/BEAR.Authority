@@ -7,6 +7,9 @@ use Ryo88c\Authority\Module;
 
 class AppModule extends AbstractModule
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function configure()
     {
         $this->install(new ResourceModule('FakeVendor\FakeProject'));

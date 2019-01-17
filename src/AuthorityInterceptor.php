@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Ryo88c\Authority;
 
 use BEAR\Resource\Exception\BadRequestException;
@@ -9,7 +12,7 @@ use Ray\Aop\MethodInterceptor;
 use Ray\Aop\MethodInvocation;
 use Ray\Di\Di\Named;
 
-class AuthorityInterceptor implements MethodInterceptor
+final class AuthorityInterceptor implements MethodInterceptor
 {
     /**
      * @var AuthorizationInterface
@@ -27,12 +30,6 @@ class AuthorityInterceptor implements MethodInterceptor
     private $config;
 
     /**
-     * AuthorityInterceptor constructor.
-     *
-     * @param AuthorizationInterface  $authorization
-     * @param AuthenticationInterface $authentication
-     * @param array                   $config
-     *
      * @Named("config=authority_config")
      */
     public function __construct(
@@ -76,11 +73,12 @@ class AuthorityInterceptor implements MethodInterceptor
             $this->error($caller, 'insufficient_scope', $e->getMessage());
         } catch (\InvalidArgumentException $e) {
             $caller->code = StatusCode::INTERNAL_SERVER_ERROR;
+
             throw new BadRequestException($e->getMessage(), $caller->code);
         }
     }
 
-    public function error(ResourceObject &$ro, $error = null, $description = null)
+    public function error(ResourceObject &$ro, $error = null, $description = null) : void
     {
         $ro->headers['WWW-Authenticate'] = sprintf('Bearer realm="%s"', $this->config['realm']);
         if (! empty($error)) {

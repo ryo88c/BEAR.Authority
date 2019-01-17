@@ -1,19 +1,26 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Ryo88c\Authority;
 
 use Aura\Web\Request;
 use Firebase\JWT\JWT;
 use Ray\Di\Di\Named;
 
-class Authorization implements AuthorizationInterface
+final class Authorization implements AuthorizationInterface
 {
+    /**
+     * @var Request
+     */
     private $request;
 
+    /**
+     * @var array
+     */
     private $config;
 
     /**
-     * Authorization constructor.
-     *
      * @param Request $request Request
      * @param array   $config  Configuration
      *
@@ -25,14 +32,20 @@ class Authorization implements AuthorizationInterface
         $this->config = $config;
     }
 
-    public function authorize() : AudienceInterface
+    /**
+     * {@inheritdoc}
+     */
+    public function authorize() : AbstractAudience
     {
         $payload = $this->decodeToken($this->extractToken());
 
         return $payload->aud;
     }
 
-    public function tokenize(AudienceInterface $aud, int $exp = null) : string
+    /**
+     * {@inheritdoc}
+     */
+    public function tokenize(AbstractAudience $aud, int $exp = null) : string
     {
         if (empty($exp)) {
             $exp = time() + 1800;
@@ -41,25 +54,25 @@ class Authorization implements AuthorizationInterface
         return $this->encodeToken(new Payload($aud, $exp));
     }
 
-    public function encodeToken(PayloadInterface $payload) : string
+    public function encodeToken(AbstractPayload $payload) : string
     {
         return JWT::encode($payload->toArray(), $this->getPrivateKey(), $this->config['jwt']['algorithm']);
     }
 
-    public function decodeToken($jwt) : PayloadInterface
+    public function decodeToken($jwt) : AbstractPayload
     {
         $payload = (array) JWT::decode($jwt, $this->getPrivateKey(), [$this->config['jwt']['algorithm']]);
 
         return new Payload(new Audience((array) $payload['aud']), $payload['exp']);
     }
 
-    private function getPrivateKey()
+    private function getPrivateKey() : string
     {
         if (! file_exists($this->config['privateKey']['filePath'])) {
             file_put_contents($this->config['privateKey']['filePath'], $this->generatePrivateKey());
         }
 
-        return file_get_contents($this->config['privateKey']['filePath']);
+        return $this->fileGetContests($this->config['privateKey']['filePath']);
     }
 
     private function generatePrivateKey() : string
@@ -76,7 +89,7 @@ class Authorization implements AuthorizationInterface
     private function extractToken()
     {
         $token = null;
-        $header = $this->request->headers->get('authorization');
+        $header = (string) $this->request->headers->get('authorization');
         if (preg_match('!Bearer\s+(.*)\z!i', $header, $matches)) {
             $token = $matches[1];
         }
@@ -110,5 +123,15 @@ class Authorization implements AuthorizationInterface
         }
 
         return $token;
+    }
+
+    private function fileGetContests(string $file) : string
+    {
+        $fileContents = \file_get_contents($file);
+        if (\is_string($fileContents)) {
+            return $file;
+        }
+
+        throw new \RuntimeException($file);
     }
 }
