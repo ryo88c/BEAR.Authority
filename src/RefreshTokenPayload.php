@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Ryo88c\Authority;
 
-final class AccessTokenPayload extends AbstractPayload
+final class RefreshTokenPayload extends AbstractPayload
 {
-    /**
-     * @see https://tools.ietf.org/html/rfc7519#section-4.1
-     */
-    public function __construct(AbstractAudience $aud, int $exp)
+    protected $accessToken;
+
+    public function __construct(string $accessToken)
     {
-        $this->aud = $aud;
-        $this->exp = $exp;
+        $this->accessToken = $accessToken;
     }
 
     /**
@@ -20,6 +18,6 @@ final class AccessTokenPayload extends AbstractPayload
      */
     public function toArray() : array
     {
-        return ['aud' => $this->aud->toArray(), 'exp' => $this->exp];
+        return ['accessToken' => $this->accessToken];
     }
 }

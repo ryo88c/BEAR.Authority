@@ -45,13 +45,20 @@ final class Authorization implements AuthorizationInterface
     /**
      * {@inheritdoc}
      */
-    public function tokenize(AbstractAudience $aud, int $exp = null) : string
+    public function tokenize(AbstractAudience $aud, int $exp = null) : array
     {
         if (empty($exp)) {
             $exp = time() + 1800;
         }
 
-        return $this->encodeToken(new Payload($aud, $exp));
+        $accessToken = $this->encodeToken(new AccessTokenPayload($aud, $exp));
+        $refreshToken = $this->encodeToken(new RefreshTokenPayload($accessToken));
+
+        return [
+            'expiresIn' => $exp,
+            'accessToken' => $accessToken,
+            'refreshToken' => $refreshToken
+        ];
     }
 
     public function encodeToken(AbstractPayload $payload) : string
@@ -63,7 +70,7 @@ final class Authorization implements AuthorizationInterface
     {
         $payload = (array) JWT::decode($jwt, $this->getPrivateKey(), [$this->config['jwt']['algorithm']]);
 
-        return new Payload(new Audience((array) $payload['aud']), $payload['exp']);
+        return new AccessTokenPayload(new Audience((array) $payload['aud']), $payload['exp']);
     }
 
     private function getPrivateKey() : string

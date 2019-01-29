@@ -11,16 +11,16 @@ namespace Ryo88c\Authority;
 abstract class AbstractPayload
 {
     /**
-     * @var AbstractAudience
+     * {@inheritdoc}
      */
-    protected $aud;
+    public function __get(string $name)
+    {
+        if (! isset($this->{$name})) {
+            throw new \InvalidArgumentException(sprintf('%s in undefined.', $name));
+        }
 
-    /**
-     * @var int
-     */
-    protected $exp;
-
-    abstract public function __get(string $name);
+        return $this->{$name};
+    }
 
     abstract public function toArray() : array;
 }

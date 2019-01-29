@@ -35,7 +35,7 @@ class AuthorityTest extends TestCase
     public function testSuccessAuthorizeByAllow() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
-        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
+        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
         /* @var Resource $resource */
@@ -47,7 +47,7 @@ class AuthorityTest extends TestCase
     public function testFailAuthorizeByAllow() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'guest']));
-        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
+        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
         /* @var Resource $resource */
@@ -73,7 +73,7 @@ class AuthorityTest extends TestCase
     public function testSuccessAuthorizeByDeny() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
-        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
+        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
         /* @var Resource $resource */
@@ -85,7 +85,7 @@ class AuthorityTest extends TestCase
     public function testFailAuthorizeByDeny() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'guest']));
-        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
+        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
         /* @var Resource $resource */
@@ -111,8 +111,8 @@ class AuthorityTest extends TestCase
     public function testFailAuthorizeByMultipleToken1() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
-        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
-        $_GET['accessToken'] = $token;
+        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
+        $_GET['accessToken'] = $token['accessToken'];
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
         /* @var Resource $resource */
@@ -124,9 +124,9 @@ class AuthorityTest extends TestCase
     public function testFailAuthorizeByMultipleToken2() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
-        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
+        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['accessToken'] = $token;
+        $_POST['accessToken'] = $token['accessToken'];
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
         $response = $resource->post->uri('app://self/authRequiredAllow')->request();
@@ -137,9 +137,9 @@ class AuthorityTest extends TestCase
     public function testFailAuthorizeByMultipleToken3() : void
     {
         $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
-        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token);
+        $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_GET['accessToken'] = $_POST['accessToken'] = $token;
+        $_GET['accessToken'] = $_POST['accessToken'] = $token['accessToken'];
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
         $response = $resource->post->uri('app://self/authRequiredAllow')->request();
