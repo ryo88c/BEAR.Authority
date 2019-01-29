@@ -20,7 +20,7 @@ final class Audience extends AbstractAudience
     /**
      * {@inheritdoc}
      */
-    public function __get(string $name) : string
+    public function __get(string $name)
     {
         if (! isset($this->{$name})) {
             throw new \InvalidArgumentException(sprintf('%s in undefined.', $name));

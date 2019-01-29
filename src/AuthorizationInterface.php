@@ -9,4 +9,8 @@ interface AuthorizationInterface
     public function authorize() : AbstractAudience;
 
     public function tokenize(AbstractAudience $aud, int $exp = null) : array;
+
+    public function hasToken() : bool;
+
+    public function extractToken() : string;
 }

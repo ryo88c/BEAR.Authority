@@ -73,12 +73,12 @@ final class Authorization implements AuthorizationInterface
         return new AccessTokenPayload(new Audience((array) $payload['aud']), $payload['exp']);
     }
 
-    public function hasToken()
+    public function hasToken() : bool
     {
         return null !== $this->extractToken();
     }
 
-    public function extractToken()
+    public function extractToken() : string
     {
         $token = null;
         $header = (string) $this->request->headers->get('authorization');
