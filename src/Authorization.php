@@ -73,27 +73,12 @@ final class Authorization implements AuthorizationInterface
         return new AccessTokenPayload(new Audience((array) $payload['aud']), $payload['exp']);
     }
 
-    private function getPrivateKey() : string
+    public function hasToken()
     {
-        if (! file_exists($this->config['privateKey']['filePath'])) {
-            file_put_contents($this->config['privateKey']['filePath'], $this->generatePrivateKey());
-        }
-
-        return $this->fileGetContests($this->config['privateKey']['filePath']);
+        return null !== $this->extractToken();
     }
 
-    private function generatePrivateKey() : string
-    {
-        $keyResource = openssl_pkey_new($this->config['openssl']);
-        if (! is_resource($keyResource)) {
-            throw new \RuntimeException;
-        }
-        openssl_pkey_export($keyResource, $privateKey);
-
-        return $privateKey;
-    }
-
-    private function extractToken()
+    public function extractToken()
     {
         $token = null;
         $header = (string) $this->request->headers->get('authorization');
@@ -130,6 +115,26 @@ final class Authorization implements AuthorizationInterface
         }
 
         return $token;
+    }
+
+    private function getPrivateKey() : string
+    {
+        if (! file_exists($this->config['privateKey']['filePath'])) {
+            file_put_contents($this->config['privateKey']['filePath'], $this->generatePrivateKey());
+        }
+
+        return $this->fileGetContests($this->config['privateKey']['filePath']);
+    }
+
+    private function generatePrivateKey() : string
+    {
+        $keyResource = openssl_pkey_new($this->config['openssl']);
+        if (! is_resource($keyResource)) {
+            throw new \RuntimeException;
+        }
+        openssl_pkey_export($keyResource, $privateKey);
+
+        return $privateKey;
     }
 
     private function fileGetContests(string $file) : string
