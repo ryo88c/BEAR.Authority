@@ -18,7 +18,7 @@ final class Payload extends AbstractPayload
     /**
      * {@inheritdoc}
      */
-    public function __get(string $name) : AbstractAudience
+    public function __get(string $name)
     {
         if (! isset($this->{$name})) {
             throw new \InvalidArgumentException(sprintf('%s in undefined.', $name));

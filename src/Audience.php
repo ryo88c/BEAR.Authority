@@ -6,16 +6,6 @@ namespace Ryo88c\Authority;
 
 final class Audience extends AbstractAudience
 {
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var string
-     */
-    public $role;
-
     public function __construct(array $params)
     {
         foreach (['id', 'role'] as $name) {

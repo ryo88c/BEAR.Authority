@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace Ryo88c\Authority;
 
+/**
+ * @property AbstractAudience $aud
+ * @property int $exp
+ */
 abstract class AbstractPayload
 {
     /**
      * @var AbstractAudience
      */
-    public $aud;
+    protected $aud;
 
     /**
      * @var int
      */
-    public $exp;
+    protected $exp;
 
-    abstract public function __get(string $name) : AbstractAudience;
+    abstract public function __get(string $name);
 
     abstract public function toArray() : array;
 }
