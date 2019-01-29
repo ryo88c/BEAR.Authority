@@ -23,7 +23,8 @@
         "phpmd/phpmd": "^2.6",
         "phpunit/phpunit": "^7.0",
         "squizlabs/php_codesniffer": "^3.3",
-        "phpstan/phpstan-shim": "^0.10"
+        "phpstan/phpstan-shim": "^0.10",
+        "nikic/php-parser": "^4.2"
     },
     "autoload": {
         "psr-4": {
@@ -44,7 +45,6 @@
             "@cs",
             "phpmd src,tests text ./phpmd.xml",
             "phpstan analyse -l max src tests -c phpstan.neon --no-progress",
-            "psalm  --show-info=false",
             "@test"
         ],
         "coverage": [
