@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ryo88c\Authority;
 
+use Ray\Aop\MethodInvocation;
 use Ray\Di\Di\Named;
 
 final class Authentication implements AuthenticationInterface
@@ -24,8 +25,13 @@ final class Authentication implements AuthenticationInterface
     /**
      * {@inheritdoc}
      */
-    public function authenticate(AbstractAudience $audience, Auth $annotation) : bool
+    public function authenticate(AbstractAudience $audience, MethodInvocation $invocation) : bool
     {
+        $annotation = $invocation->getMethod()->getAnnotation(Auth::class);
+        if (empty($annotation) || ! ($annotation instanceof Auth)) {
+            return true;
+        }
+
         $condition = $this->extractAuthCondition($annotation);
         if ($condition === []) {
             return true;

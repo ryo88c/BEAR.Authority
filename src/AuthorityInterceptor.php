@@ -44,17 +44,12 @@ final class AuthorityInterceptor implements MethodInterceptor
 
     public function invoke(MethodInvocation $invocation)
     {
-        $annotation = $invocation->getMethod()->getAnnotation(Auth::class);
-        if (empty($annotation) || ! ($annotation instanceof Auth)) {
-            return $invocation->proceed();
-        }
-
+        $caller = $invocation->getThis();
         try {
-            $caller = $invocation->getThis();
             if (! ($caller instanceof ResourceObject)) {
                 throw new \LogicException('Caller must be ResourceObject.');
             }
-            if (! $this->authentication->authenticate($this->authorization->authorize(), $annotation)) {
+            if (! $this->authentication->authenticate($this->authorization->authorize(), $invocation)) {
                 throw new PermissionDeniedException('You do not have a permission to access.');
             }
 
