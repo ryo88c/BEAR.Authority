@@ -14,9 +14,9 @@ interface AuthorizationInterface
 
     public function extractToken() : string;
 
-    public function encodeToken(AbstractPayload $payload) : string;
+    public function encodeToken(AbstractPayload $payload, $key = null) : string;
 
-    public function decodeToken($jwt);
+    public function decodeToken($jwt, $key = null);
 
     public function generatePrivateKey() : string;
 }
