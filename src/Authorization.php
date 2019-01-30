@@ -61,13 +61,16 @@ final class Authorization implements AuthorizationInterface
         ];
     }
 
-    public function encodeToken(AbstractPayload $payload, $key = null) : string
+    public function encodeToken($payload, $key = null) : string
     {
         if ($key === null) {
             $key = $this->getPrivateKey();
         }
+        if ($payload instanceof AbstractPayload) {
+            $payload = $payload->toArray();
+        }
 
-        return JWT::encode($payload->toArray(), $key, $this->config['jwt']['algorithm']);
+        return JWT::encode($payload, $key, $this->config['jwt']['algorithm']);
     }
 
     public function decodeToken($jwt, $key = null)
