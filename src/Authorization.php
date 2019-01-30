@@ -112,7 +112,7 @@ final class Authorization implements AuthorizationInterface
             throw new TokenNotFoundException;
         }
 
-        return $token;
+        return (string) $token;
     }
 
     private function getPrivateKey() : string

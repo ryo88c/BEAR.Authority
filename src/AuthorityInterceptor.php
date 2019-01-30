@@ -55,25 +55,25 @@ final class AuthorityInterceptor implements MethodInterceptor
 
             return $invocation->proceed();
         } catch (TokenNotFoundException $e) {
-            $caller->code = StatusCode::UNAUTHORIZED;
-            $this->error($caller);
+            $this->raiseError($caller);
+        } catch (InvalidTokenException $e) {
+            $this->raiseError($caller, 'invalid_token', $e->getMessage());
         } catch (ExpiredException $e) {
-            $caller->code = StatusCode::UNAUTHORIZED;
-            $this->error($caller, 'invalid_token', $e->getMessage());
+            $this->raiseError($caller, 'invalid_token', $e->getMessage());
         } catch (DuplicateAccessTokenException $e) {
-            $caller->code = StatusCode::BAD_REQUEST;
-            $this->error($caller, 'invalid_request', $e->getMessage());
+            $this->raiseError($caller, 'invalid_request', $e->getMessage());
         } catch (PermissionDeniedException $e) {
-            $caller->code = StatusCode::FORBIDDEN;
-            $this->error($caller, 'insufficient_scope', $e->getMessage());
+            $this->raiseError($caller, 'insufficient_scope', $e->getMessage());
         } catch (\InvalidArgumentException $e) {
             $caller->code = StatusCode::INTERNAL_SERVER_ERROR;
 
             throw new BadRequestException($e->getMessage(), $caller->code);
         }
+
+        return $caller;
     }
 
-    public function error(ResourceObject &$ro, $error = null, $description = null) : void
+    public function raiseError(ResourceObject &$ro, $error = null, $description = null) : void
     {
         $ro->headers['WWW-Authenticate'] = sprintf('Bearer realm="%s"', $this->config['realm']);
         if (! empty($error)) {
@@ -81,6 +81,21 @@ final class AuthorityInterceptor implements MethodInterceptor
         }
         if (! empty($description)) {
             $ro->headers['WWW-Authenticate'] .= sprintf(',error_description="%s"', $description);
+        }
+        switch ($error) {
+            case 'invalid_request':
+                $ro->code = StatusCode::BAD_REQUEST;
+
+                break;
+            case 'insufficient_scope':
+                $ro->code = StatusCode::FORBIDDEN;
+
+                break;
+            case 'invalid_token':
+            default:
+                $ro->code = StatusCode::UNAUTHORIZED;
+
+                break;
         }
     }
 }
