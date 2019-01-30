@@ -34,7 +34,7 @@ class AuthorityTest extends TestCase
 
     public function testSuccessAuthorizeByAllow() : void
     {
-        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
+        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin', 'label' => 'Master']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
@@ -46,7 +46,7 @@ class AuthorityTest extends TestCase
 
     public function testFailAuthorizeByAllow() : void
     {
-        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'guest']));
+        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'guest', 'label' => 'Master']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
@@ -72,7 +72,7 @@ class AuthorityTest extends TestCase
 
     public function testSuccessAuthorizeByDeny() : void
     {
-        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
+        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin', 'label' => 'Master']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
@@ -84,7 +84,7 @@ class AuthorityTest extends TestCase
 
     public function testFailAuthorizeByDeny() : void
     {
-        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'guest']));
+        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'guest', 'label' => 'Master']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
 
         $resource = (new Injector(new AppModule, $this->tmpDir))->getInstance(ResourceInterface::class);
@@ -110,7 +110,7 @@ class AuthorityTest extends TestCase
 
     public function testFailAuthorizeByMultipleToken1() : void
     {
-        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
+        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin', 'label' => 'Master']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
         $_GET['accessToken'] = $token['accessToken'];
 
@@ -123,7 +123,7 @@ class AuthorityTest extends TestCase
 
     public function testFailAuthorizeByMultipleToken2() : void
     {
-        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
+        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin', 'label' => 'Master']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST['accessToken'] = $token['accessToken'];
@@ -136,7 +136,7 @@ class AuthorityTest extends TestCase
 
     public function testFailAuthorizeByMultipleToken3() : void
     {
-        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin']));
+        $token = $this->authorization->tokenize(new Audience(['id' => 1, 'role' => 'admin', 'label' => 'Master']));
         $_SERVER['HTTP_AUTHORIZATION'] = sprintf('Bearer %s', $token['accessToken']);
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_GET['accessToken'] = $_POST['accessToken'] = $token['accessToken'];

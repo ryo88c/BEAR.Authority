@@ -35,11 +35,11 @@ final class Authorization implements AuthorizationInterface
     /**
      * {@inheritdoc}
      */
-    public function authorize() : AbstractAudience
+    public function authorize()
     {
         $payload = $this->decodeToken($this->extractToken());
 
-        return $payload->aud;
+        return new Audience($payload->aud);
     }
 
     /**
@@ -66,11 +66,9 @@ final class Authorization implements AuthorizationInterface
         return JWT::encode($payload->toArray(), $this->getPrivateKey(), $this->config['jwt']['algorithm']);
     }
 
-    public function decodeToken($jwt) : AbstractPayload
+    public function decodeToken($jwt)
     {
-        $payload = (array) JWT::decode($jwt, $this->getPrivateKey(), [$this->config['jwt']['algorithm']]);
-
-        return new AccessTokenPayload(new Audience((array) $payload['aud']), $payload['exp']);
+        return JWT::decode($jwt, $this->getPrivateKey(), [$this->config['jwt']['algorithm']]);
     }
 
     public function hasToken() : bool
