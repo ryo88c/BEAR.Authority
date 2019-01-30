@@ -115,16 +115,7 @@ final class Authorization implements AuthorizationInterface
         return (string) $token;
     }
 
-    private function getPrivateKey() : string
-    {
-        if (! file_exists($this->config['privateKey']['filePath'])) {
-            file_put_contents($this->config['privateKey']['filePath'], $this->generatePrivateKey());
-        }
-
-        return $this->fileGetContests($this->config['privateKey']['filePath']);
-    }
-
-    private function generatePrivateKey() : string
+    public function generatePrivateKey() : string
     {
         $keyResource = openssl_pkey_new($this->config['openssl']);
         if (! is_resource($keyResource)) {
@@ -133,6 +124,15 @@ final class Authorization implements AuthorizationInterface
         openssl_pkey_export($keyResource, $privateKey);
 
         return $privateKey;
+    }
+
+    private function getPrivateKey() : string
+    {
+        if (! file_exists($this->config['privateKey']['filePath'])) {
+            file_put_contents($this->config['privateKey']['filePath'], $this->generatePrivateKey());
+        }
+
+        return $this->fileGetContests($this->config['privateKey']['filePath']);
     }
 
     private function fileGetContests(string $file) : string
