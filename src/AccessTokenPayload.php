@@ -30,6 +30,6 @@ final class AccessTokenPayload extends AbstractPayload
      */
     public function toArray() : array
     {
-        return ['aud' => $this->aud->toArray(), 'exp' => $this->exp, 'isRefreshToken' => $this->isRefreshToken];
+        return ['aud' => $this->aud->toArray(), 'exp' => $this->exp];
     }
 }

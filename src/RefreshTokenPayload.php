@@ -6,8 +6,6 @@ namespace Ryo88c\Authority;
 
 final class RefreshTokenPayload extends AbstractPayload
 {
-    protected $isRefreshToken = true;
-
     protected $aud;
 
     public function __construct(AbstractAudience $aud)
@@ -20,6 +18,6 @@ final class RefreshTokenPayload extends AbstractPayload
      */
     public function toArray() : array
     {
-        return ['aud' => $this->aud, 'isRefreshToken' => $this->isRefreshToken];
+        return ['aud' => $this->aud->toArray()];
     }
 }

@@ -10,8 +10,6 @@ namespace Ryo88c\Authority;
  */
 abstract class AbstractPayload
 {
-    protected $isRefreshToken = false;
-
     /**
      * {@inheritdoc}
      */
