@@ -35,7 +35,7 @@ final class Authorization implements AuthorizationInterface
     /**
      * {@inheritdoc}
      */
-    public function authorize()
+    public function authorize() : Audience
     {
         $payload = $this->decodeToken($this->extractToken());
 
@@ -52,7 +52,7 @@ final class Authorization implements AuthorizationInterface
         }
 
         $accessToken = $this->encodeToken(new AccessTokenPayload($aud, $exp));
-        $refreshToken = $this->encodeToken(new RefreshTokenPayload($accessToken));
+        $refreshToken = $this->encodeToken(new RefreshTokenPayload($aud));
 
         return [
             'expiresIn' => $exp,
