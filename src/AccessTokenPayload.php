@@ -17,12 +17,18 @@ final class AccessTokenPayload extends AbstractPayload
     protected $exp;
 
     /**
+     * @var int
+     */
+    protected $createdAt;
+
+    /**
      * @see https://tools.ietf.org/html/rfc7519#section-4.1
      */
     public function __construct(AbstractAudience $aud, int $exp)
     {
         $this->aud = $aud;
         $this->exp = $exp;
+        $this->createdAt = time();
     }
 
     /**
@@ -30,6 +36,6 @@ final class AccessTokenPayload extends AbstractPayload
      */
     public function toArray() : array
     {
-        return ['aud' => $this->aud->toArray(), 'exp' => $this->exp];
+        return ['aud' => $this->aud->toArray(), 'exp' => $this->exp, 'createdAt' => $this->createdAt];
     }
 }
