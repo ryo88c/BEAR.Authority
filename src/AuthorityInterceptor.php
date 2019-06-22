@@ -49,7 +49,13 @@ final class AuthorityInterceptor implements MethodInterceptor
             if (! ($caller instanceof ResourceObject)) {
                 throw new \LogicException('Caller must be ResourceObject.');
             }
-            if (! $this->authentication->authenticate($this->authorization->authorize(), $invocation)) {
+            $accessToken = null;
+            if (isset($caller->uri->query['accessToken'])) {
+                $accessToken = $caller->uri->query['accessToken'];
+            } elseif (isset($caller->uri->query['access_token'])) {
+                $accessToken = $caller->uri->query['access_token'];
+            }
+            if (! $this->authentication->authenticate($this->authorization->authorize($accessToken), $invocation)) {
                 throw new PermissionDeniedException('You do not have a permission to access.');
             }
 

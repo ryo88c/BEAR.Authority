@@ -21,6 +21,11 @@ final class Authorization implements AuthorizationInterface
     private $config;
 
     /**
+     * @var Audience
+     */
+    private $audience;
+
+    /**
      * @param Request $request Request
      * @param array   $config  Configuration
      *
@@ -35,11 +40,18 @@ final class Authorization implements AuthorizationInterface
     /**
      * {@inheritdoc}
      */
-    public function authorize() : Audience
+    public function authorize($accessToken = null) : Audience
     {
-        $payload = $this->decodeToken($this->extractToken());
+        if ($accessToken === null) {
+            if (isset($this->audience)) {
+                return $this->audience;
+            }
+            $accessToken = $this->extractToken();
+        }
+        $payload = $this->decodeToken($accessToken);
+        $this->audience = new Audience($payload->aud);
 
-        return new Audience($payload->aud);
+        return $this->audience;
     }
 
     /**
