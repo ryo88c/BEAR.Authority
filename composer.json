@@ -16,7 +16,7 @@
         "ray/aura-web-module": "^0.1.0",
         "ext-json": "^1.5",
         "ext-openssl": "^7.1",
-        "bear/package": "^1.9"
+        "bear/package": ">=1.9"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.13",
